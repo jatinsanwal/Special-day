@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Mummy 💕</title>
+
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#ff9ecb,#ff4d88);
+  color:white;
+  text-align:center;
+  overflow:hidden;
+}
+
+/* pages */
+.page{display:none;min-height:100vh;justify-content:center;align-items:center;flex-direction:column;}
+.active{display:flex;}
+
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:white;
+  color:#ff4d88;
+  font-weight:bold;
+  margin-top:20px;
+}
+
+/* typing */
+.typing{max-width:300px;font-size:20px;}
+
+/* hearts FAST */
+.heart{
+  position:fixed;
+  top:-10px;
+  animation:fall 3s linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(110vh);}
+}
+
+/* balloons FAST */
+.balloon{
+  position:fixed;
+  bottom:-50px;
+  animation:rise 4s linear infinite;
+}
+@keyframes rise{
+  to{transform:translateY(-120vh);}
+}
+
+/* cake */
+#cake{font-size:90px;}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+  <h1 id="t1"></h1>
+  <p id="s1"></p>
+  <button onclick="next(2)">Enter 🎀</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+  <h2 id="t2"></h2>
+  <div id="cake">🎂</div>
+  <button onclick="cutCake()">Cut Cake 🔪</button>
+  <p id="cakeMsg"></p>
+  <button onclick="next(3)">Next 💕</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+  <h2 id="t3"></h2>
+  <p class="typing" id="msg"></p>
+  <button onclick="next(4)">Next 🎥</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+  <h2 id="t4"></h2>
+  <p class="typing" id="msg2"></p>
+  <button onclick="next(5)">Final 💕</button>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+  <h1 id="t5"></h1>
+  <p class="typing" id="finalMsg"></p>
+</div>
+
+<script>
+function next(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+
+  if(n==1) intro();
+  if(n==2) page2();
+  if(n==3) page3();
+  if(n==4) page4();
+  if(n==5) page5();
+}
+
+/* typing function */
+function type(text,id,speed){
+  let i=0;
+  let el=document.getElementById(id);
+  el.innerHTML="";
+  function t(){
+    if(i<text.length){
+      el.innerHTML+= text.charAt(i)=="\n"?"<br>":text.charAt(i);
+      i++;
+      setTimeout(t,speed);
+    }
+  }
+  t();
+}
+
+/* pages content */
+function intro(){
+  type("Happy Birthday Mummy Ji 💕","t1",40);
+  setTimeout(()=>type("Sabse pyari aur strongest mummy 💖","s1",30),2000);
+}
+
+function page2(){
+  type("Cake Ceremony 🎂","t2",40);
+}
+
+function page3(){
+  type("For You 💌","t3",40);
+  type("Mummy ji aap meri life ka sabse important hissa ho 💖\n\nAap meri strength ho 💕","msg",35);
+}
+
+function page4(){
+  type("Thank You 💖","t4",40);
+  type("Aapne hamesha support kiya 💫\n\nMain aapse bahut pyaar karta hu ❤️","msg2",35);
+}
+
+function page5(){
+  type("I Love You Mummy 💕","t5",40);
+  type("Forever ❤️","finalMsg",35);
+}
+
+/* cake */
+function cutCake(){
+  document.getElementById("cake").innerHTML="🍰";
+  document.getElementById("cakeMsg").innerHTML="🎉 Happy Birthday Mummy 💕";
+}
+
+/* hearts spam FAST */
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.innerHTML="💗";
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),3000);
+},200);
+
+/* balloons spam FAST */
+setInterval(()=>{
+  let b=document.createElement("div");
+  b.innerHTML="🎈";
+  b.className="balloon";
+  b.style.left=Math.random()*100+"vw";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),4000);
+},500);
+
+/* start */
+intro();
+</script>
+
+</body>
+</html>
