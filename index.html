@@ -14,7 +14,6 @@ body{
   overflow:hidden;
 }
 
-/* pages */
 .page{display:none;min-height:100vh;justify-content:center;align-items:center;flex-direction:column;}
 .active{display:flex;}
 
@@ -37,9 +36,7 @@ button{
   top:-10px;
   animation:fall 3s linear infinite;
 }
-@keyframes fall{
-  to{transform:translateY(110vh);}
-}
+@keyframes fall{to{transform:translateY(110vh);}}
 
 /* balloons FAST */
 .balloon{
@@ -47,30 +44,57 @@ button{
   bottom:-50px;
   animation:rise 4s linear infinite;
 }
-@keyframes rise{
-  to{transform:translateY(-120vh);}
+@keyframes rise{to{transform:translateY(-120vh);}}
+
+/* music btn */
+#musicBtn{
+  position:fixed;
+  top:15px;
+  right:15px;
+  background:white;
+  color:#ff4d88;
+  border-radius:50%;
+  padding:10px;
+  z-index:999;
 }
 
 /* cake */
-#cake{font-size:90px;}
+#cake{font-size:90px;position:relative;}
+#knife{
+  position:absolute;
+  font-size:40px;
+  top:-40px;
+  left:-80px;
+  transition:1s;
+}
 </style>
 </head>
 
 <body>
 
+<!-- MUSIC -->
+<audio id="music" src="your-music.mp3" loop></audio>
+<button id="musicBtn" onclick="toggleMusic()">🎶</button>
+
 <!-- PAGE 1 -->
 <div class="page active" id="p1">
   <h1 id="t1"></h1>
   <p id="s1"></p>
-  <button onclick="next(2)">Enter 🎀</button>
+  <button onclick="start()">Enter 🎀</button>
 </div>
 
 <!-- PAGE 2 -->
 <div class="page" id="p2">
   <h2 id="t2"></h2>
-  <div id="cake">🎂</div>
+
+  <div id="cake">
+    🎂
+    <div id="knife">🔪</div>
+  </div>
+
   <button onclick="cutCake()">Cut Cake 🔪</button>
   <p id="cakeMsg"></p>
+
   <button onclick="next(3)">Next 💕</button>
 </div>
 
@@ -81,10 +105,12 @@ button{
   <button onclick="next(4)">Next 🎥</button>
 </div>
 
-<!-- PAGE 4 -->
+<!-- PAGE 4 (VIDEO) -->
 <div class="page" id="p4">
-  <h2 id="t4"></h2>
-  <p class="typing" id="msg2"></p>
+  <h2>🎬 Memories</h2>
+  <video width="90%" controls>
+    <source src="your-video.mp4">
+  </video>
   <button onclick="next(5)">Final 💕</button>
 </div>
 
@@ -95,18 +121,8 @@ button{
 </div>
 
 <script>
-function next(n){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('p'+n).classList.add('active');
 
-  if(n==1) intro();
-  if(n==2) page2();
-  if(n==3) page3();
-  if(n==4) page4();
-  if(n==5) page5();
-}
-
-/* typing function */
+/* typing */
 function type(text,id,speed){
   let i=0;
   let el=document.getElementById(id);
@@ -121,38 +137,51 @@ function type(text,id,speed){
   t();
 }
 
-/* pages content */
-function intro(){
-  type("Happy Birthday Mummy Ji 💕","t1",40);
-  setTimeout(()=>type("Sabse pyari aur strongest mummy 💖","s1",30),2000);
+/* navigation */
+function next(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+
+  if(n==2) type("Cake Ceremony 🎂","t2",40);
+  if(n==3){
+    type("For You 💌","t3",40);
+    type("Mummy ji aap meri life ho 💖\n\nAap meri strength ho 💕\n\nLove you always ❤️","msg",35);
+  }
+  if(n==5){
+    type("I Love You Mummy 💕","t5",40);
+    type("Forever ❤️","finalMsg",35);
+  }
 }
 
-function page2(){
-  type("Cake Ceremony 🎂","t2",40);
+/* start */
+function start(){
+  next(2);
+  document.getElementById("music").play().catch(()=>{});
 }
 
-function page3(){
-  type("For You 💌","t3",40);
-  type("Mummy ji aap meri life ka sabse important hissa ho 💖\n\nAap meri strength ho 💕","msg",35);
-}
+/* intro */
+type("Happy Birthday Mummy Ji 💕","t1",40);
+setTimeout(()=>type("Sabse pyari mummy 💖","s1",30),2000);
 
-function page4(){
-  type("Thank You 💖","t4",40);
-  type("Aapne hamesha support kiya 💫\n\nMain aapse bahut pyaar karta hu ❤️","msg2",35);
-}
-
-function page5(){
-  type("I Love You Mummy 💕","t5",40);
-  type("Forever ❤️","finalMsg",35);
-}
-
-/* cake */
+/* cake cut */
 function cutCake(){
-  document.getElementById("cake").innerHTML="🍰";
-  document.getElementById("cakeMsg").innerHTML="🎉 Happy Birthday Mummy 💕";
+  let knife=document.getElementById("knife");
+  knife.style.left="40px";
+  knife.style.top="20px";
+
+  setTimeout(()=>{
+    document.getElementById("cake").innerHTML="🍰";
+    document.getElementById("cakeMsg").innerHTML="🎉 Cake Cut! Happy Birthday 💕";
+  },1000);
 }
 
-/* hearts spam FAST */
+/* music */
+function toggleMusic(){
+  let m=document.getElementById("music");
+  m.paused?m.play():m.pause();
+}
+
+/* hearts FAST */
 setInterval(()=>{
   let h=document.createElement("div");
   h.innerHTML="💗";
@@ -162,7 +191,7 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),3000);
 },200);
 
-/* balloons spam FAST */
+/* balloons FAST */
 setInterval(()=>{
   let b=document.createElement("div");
   b.innerHTML="🎈";
@@ -172,8 +201,6 @@ setInterval(()=>{
   setTimeout(()=>b.remove(),4000);
 },500);
 
-/* start */
-intro();
 </script>
 
 </body>
